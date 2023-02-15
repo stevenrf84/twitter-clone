@@ -1,0 +1,54 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+<section class="content">
+  <section >Post Form</section>
+  <form class="post_form" action="/" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="text" name="name" placeholder="name" required />
+    <textarea name="body" placeholder="Tell us anything" required></textarea>
+    <input name="image" type="file" src="" alt="">
+    <input type="Submit" value="Post" />
+  </form>
+  <section class="posts">
+    <ul>
+      {% for post in posts %}
+      <li>
+        <img class="menu_icon js-menu-icon" src="{% static 'img/menu.png' %}" />
+        <div class="menu">
+          <a href="/delete/{{ post.id }}/">Delete</a><br>
+          <a href="/edit/{{post.id}}/">
+          Edit</a>
+        </div>
+        <div class="logo">
+          <img src="{% static 'img/user.png' %}" />
+        </div>
+        <div class="name_body">
+          <div class="name">{{post.name}}</div>
+          <div class="datetime">{{post.created_at}}</div>
+          <p>{{post.body}}</p>
+          <!-- <a href="/delete/{{ post.id }}/">delete</a> -->
+          {% if post.image %}
+          <div class="post-img">
+            <img src="{{post.image.url}}" alt="">
+          </div>
+          {% endif %}
+
+          <a href="like/{{post.id}}/">
+            <img class='like' src="{% static 'img/like.png' %}" alt="">
+          </a>
+          {{post.likes}}
+          
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  <script
+    src="https://code.jquery.com/jquery-3.6.1.js"
+    integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+    crossorigin="anonymous"
+  ></script>
+  <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript">  
+  </script>
+  <script src="{% static 'js/posts.js' %}"></script>
+</section>
+{% endblock %}
